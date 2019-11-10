@@ -1,0 +1,68 @@
+---
+- name: spine-1
+  box: vEOS 
+  memory: 1536
+  links:
+    - name: S1L1
+    - name: S1L2
+  forwarded_ports:
+    - { guest: 22, host: 20001 }
+    - { guest: 443, host: 21001 } 
+
+- name: spine-2
+  box: vEOS
+  memory: 1536
+  links:
+    - name: S2L1
+    - name: S2L2
+  forwarded_ports:
+    - { guest: 22, host: 20002 }
+    - { guest: 443, host: 21002 } 
+
+- name: leaf-1
+  box: vEOS
+  memory: 1536
+  links:
+    - name: S1L1
+    - name: S2L1
+    - name: L1T1
+  forwarded_ports:
+    - { guest: 22, host: 20003 }
+    - { guest: 443, host: 21003 } 
+
+- name: leaf-2
+  box: vEOS
+  memory: 1536
+  links:
+    - name: S1L2
+    - name: S2L2
+    - name: L2T2
+  forwarded_ports:
+    - { guest: 22, host: 20004 }
+    - { guest: 443, host: 21004 } 
+
+- name: tiny-1
+  box:  olbat/tiny-core-micro
+  memory: 64
+  links:
+    - name: L1T1
+  forwarded_ports:
+    - { guest: 22, host: 20005 }
+  noSharedDrive: True
+  shell: "sh"  
+    
+- name: tiny-2
+  box:  olbat/tiny-core-micro
+  memory: 64
+  links:
+    - name: L2T2
+  forwarded_ports:
+    - { guest: 22, host: 20006 }    
+  noSharedDrive: True
+  shell: "sh" 
+  
+- name: nms
+  box:  bento/ubuntu-18.04
+  memory: 1024  
+  forwarded_ports:
+    - { guest: 22, host: 20007 }    
