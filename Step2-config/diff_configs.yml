@@ -1,0 +1,13 @@
+- hosts: all
+  gather_facts: no 
+  tags: [ diff ]
+  vars:
+    cli_commands:   "config session {{ ansible_user }}\ncopy flash:{{ inventory_hostname }}.cfg session-config\nshow session-config diffs"
+                   
+  tasks:
+    - raw: "{{ cli_commands }}"
+      register: diff
+     
+    - debug: var=diff.stdout_lines
+    
+

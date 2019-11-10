@@ -1,0 +1,50 @@
+- hosts: leaf
+  serial: 1
+  gather_facts: no 
+  vars:
+    cli_commands:   "show mac address-table"
+    output: "get_outputs/mactables.txt"
+    mac: "mac"
+                   
+  pre_tasks:
+    - file:
+        path: "{{ output }}"
+        state: absent
+      delegate_to: localhost
+      run_once: True
+      when: inventory_hostname == ansible_play_hosts_all[0] 
+    - file:
+        path: "{{ output }}"
+        state: touch
+      delegate_to: localhost
+      run_once: True
+      when: inventory_hostname == ansible_play_hosts_all[0] 
+
+  tasks:
+
+    - raw: "{{ cli_commands }}"
+      register: cli_output
+      
+    - name: save MAC tables
+      lineinfile:
+        line: |
+            =====================================
+            MAC Table of {{ inventory_hostname }}
+            =====================================
+            {% for line in cli_output.stdout_lines[5:-8] %}
+            {{ inventory_hostname}} {{ line }}
+            {% endfor %}
+        dest: "{{ output }}"
+        create: no
+      delegate_to: localhost
+      
+  post_tasks:      
+    - raw: "grep {{ mac }} {{output}} | cat"
+      register: grepOutput
+      delegate_to: localhost
+      run_once: True
+      when: inventory_hostname == ansible_play_hosts_all[-1]
+    - debug: var=grepOutput.stdout_lines
+      delegate_to: localhost
+      run_once: True
+      when: inventory_hostname == ansible_play_hosts_all[-1] 

@@ -1,0 +1,51 @@
+{#Jinja2: trim_blocks: True #}
+{% if "leaf" in inventory_hostname %}
+!
+interface Vxlan1
+   vxlan source-interface Loopback1
+   vxlan udp-port 4789
+   vxlan learn-restrict any
+!
+ip virtual-router mac-address 10:10:10:10:10:10
+!
+{% endif %}
+router bgp {{ asn }}
+{% if "leaf" in inventory_hostname %}
+   neighbor SPINE_EVPN peer-group
+   neighbor SPINE_EVPN remote-as {{ remote_asn }}
+   neighbor SPINE_EVPN update-source Loopback0
+   neighbor SPINE_EVPN allowas-in 1
+   neighbor SPINE_EVPN ebgp-multihop 4
+   neighbor SPINE_EVPN send-community extended
+   neighbor SPINE_EVPN maximum-routes 50
+{%   for peer in peers_overlay %}
+   neighbor {{ peer["ip"] }} peer-group SPINE_EVPN
+{%   endfor %}
+   !
+   address-family evpn
+      no neighbor SPINE activate
+      neighbor SPINE_EVPN activate
+   !
+   address-family ipv4
+      no neighbor SPINE_EVPN activate
+   !
+{% endif %}
+{% if "spine" in inventory_hostname %}
+   neighbor LEAF_EVPN peer-group
+   neighbor LEAF_EVPN remote-as {{ remote_asn }}
+   neighbor LEAF_EVPN update-source Loopback0
+   neighbor LEAF_EVPN ebgp-multihop 4
+   neighbor LEAF_EVPN send-community extended
+   neighbor LEAF_EVPN maximum-routes 50
+{%   for peer in peers_overlay %}
+   neighbor {{ peer["ip"] }} peer-group LEAF_EVPN
+{%   endfor %}
+   !  
+   address-family evpn
+      no neighbor LEAF activate
+      neighbor LEAF_EVPN activate
+   !
+   address-family ipv4
+   no neighbor LEAF_EVPN activate
+   !
+{% endif %}

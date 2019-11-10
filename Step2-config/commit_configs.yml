@@ -1,0 +1,14 @@
+- hosts: all
+  gather_facts: no 
+  tags: [ commit ]
+  vars:
+    cli_commands:   "config session {{ ansible_user }}\ncommit"
+                   
+  tasks:
+    - raw: "{{ cli_commands }}"
+      register: commit_status
+      
+    - debug: var=commit_status.stdout_lines
+      
+    
+

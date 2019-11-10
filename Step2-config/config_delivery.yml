@@ -1,0 +1,19 @@
+---
+- include: create_configs.yml
+  name: re-create and merge underlay, overlay and services configs
+  tags: [ create ]
+  
+- include: push_configs.yml
+  name: scp newly generated device configs 
+  tags: [ push ]
+  
+- include: diff_configs.yml
+  name: see the diffs between running config and target config
+  tags: [ diff ]
+
+- include: commit_configs.yml
+  name: apply the diffs
+  tags: [ commit ]
+
+
+

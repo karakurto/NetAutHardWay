@@ -1,0 +1,70 @@
+{#Jinja2: trim_blocks: True #}
+!
+service routing protocols model multi-agent
+!
+hostname {{ inventory_hostname }}
+!
+aaa authorization exec default local
+!
+username admin secret {{ secret }} 
+!
+{% for int in interfaces %}
+interface {{ int["name"] }}
+{%   if "eth" in int["name"] %}
+   no switchport
+{%   endif %}
+   description {{ int["desc"] }}
+   ip address {{ int["ip_address"] }}
+{% endfor %}
+!
+ip routing
+!
+ip prefix-list pl-loopback
+{% set ns = namespace(seq = 10) %}
+{% for int in interfaces %}
+{%   if "lo" in int["name"] %}
+   seq {{ ns.seq }} permit {{ int["ip_address"] }}
+{%  set ns.seq = ns.seq + 10 -%} 
+{%   endif %}
+{% endfor %}
+!
+route-map rm-loopback permit 10
+   match ip address prefix-list pl-loopback
+!
+router bgp {{ asn }}
+   router-id {{ router_id }}
+   distance bgp 20 200 200
+   maximum-paths 2
+{% if "leaf" in inventory_hostname %}
+   neighbor SPINE peer-group
+   neighbor SPINE remote-as {{ remote_asn }}
+   neighbor SPINE allowas-in 1
+   neighbor SPINE route-map rm-loopback out
+   neighbor SPINE send-community
+   neighbor SPINE maximum-routes 30
+{%   for peer in peers_underlay %}
+   neighbor {{ peer["ip"] }} peer-group SPINE
+{%   endfor %}
+   redistribute connected route-map rm-loopback
+   !
+   address-family ipv4
+      neighbor SPINE activate
+   !
+{% endif %}
+{% if "spine" in inventory_hostname  %}
+   neighbor LEAF peer-group
+   neighbor LEAF remote-as {{ remote_asn }}
+   neighbor LEAF route-map rm-loopback out
+   neighbor LEAF send-community
+   neighbor LEAF maximum-routes 30
+{%   for peer in peers_underlay %}
+   neighbor {{ peer["ip"] }} peer-group LEAF
+{%   endfor %}
+   redistribute connected route-map rm-loopback
+   !
+   address-family ipv4
+      neighbor LEAF activate
+  !
+{% endif %}
+      exit
+   exit

@@ -1,0 +1,19 @@
+router bgp 65000
+   neighbor LEAF_EVPN peer-group
+   neighbor LEAF_EVPN remote-as 65001
+   neighbor LEAF_EVPN update-source Loopback0
+   neighbor LEAF_EVPN ebgp-multihop 4
+   neighbor LEAF_EVPN send-community extended
+   neighbor LEAF_EVPN maximum-routes 50
+   neighbor 192.168.0.1 peer-group LEAF_EVPN
+   neighbor 192.168.0.2 peer-group LEAF_EVPN
+   !  
+   address-family evpn
+      no neighbor LEAF activate
+      neighbor LEAF_EVPN activate
+   !
+   address-family ipv4
+   no neighbor LEAF_EVPN activate
+   !
+   exit
+ exit

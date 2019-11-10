@@ -1,0 +1,51 @@
+{#Jinja2: trim_blocks: True #}
+{% for cust in customers %}
+{%   for srv in cust["services"] %}
+{%     if inventory_hostname in srv["sap"].keys() %}
+{%       if loop.first %}
+!!!!!!!!!!!  L3 VNI COnfiguration for {{ cust["name"] }} !!!!!!!!!!!!!!
+vrf definition {{ cust["name"] }}
+ip routing vrf {{ cust["name"] }}
+interface Vxlan1
+   vxlan vrf {{ cust["name"] }} vni {{ cust["l3_vni"] }}
+router bgp {{ asn }}
+   !
+   vrf {{ cust["name"] }}
+      rd {{ router_id }}:{{ cust["l3_vni"] }}
+      route-target import {{ asn }}:{{ cust["l3_vni"] }}
+      route-target export {{ asn }}:{{ cust["l3_vni"] }}
+!
+      exit
+   exit
+!!!!!!!!!!!  VLAN/GW/L2 VNI and SAP Configuration for {{ cust["name"] }} !!!!!!!!!!!!!!
+{%       endif %}
+vlan {{ srv["vlan_id"] }}
+   name {{ cust["name"] }}
+!
+interface Vlan {{ srv["vlan_id"] }}
+   vrf forwarding {{ cust["name"] }}
+   ip address virtual {{ srv["gw"] }}
+!
+interface Vxlan1
+   vxlan vlan {{ srv["vlan_id"] }} vni {{ srv["vni"] }}
+!
+router bgp {{ asn }}
+   !
+   vlan {{ srv["vlan_id"] }}
+      rd {{ router_id }}:{{ srv["vni"] }}
+      route-target both {{ asn }}:{{ srv["vni"] }}
+      redistribute learned
+   !
+      exit
+    exit
+{%       for port in srv["sap"][inventory_hostname] %}
+interface {{ port }}
+   description {{ cust["name"] }}
+   switchport trunk allowed vlan add {{ srv["vlan_id"] }}
+!
+{%       endfor %}
+{%     endif %}
+{%   endfor %}
+{% endfor %}
+
+

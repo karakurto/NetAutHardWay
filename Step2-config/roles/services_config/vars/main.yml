@@ -1,0 +1,34 @@
+customers:
+    - name: "cust-1"
+      l3_vni: "101"
+      services:
+        - vlan_id: "10"
+          vni: "1010"
+          gw: "10.0.0.254/24"
+          sap: 
+            leaf-1: ["Eth3"]
+            leaf-2: ["Eth3"]
+            
+        - vlan_id: "11"
+          vni: "1011"
+          gw: "10.0.1.254/24"
+          sap: 
+            leaf-1: ["Eth3"]
+            leaf-2: ["Eth3"]
+            
+    - name: "cust-2"
+      l3_vni: "102"
+      services:
+        - vlan_id: "20"
+          vni: "1020"
+          gw: "20.0.0.254/24"
+          sap: 
+            leaf-3: ["Eth3", "Eth4"]
+            leaf-4: ["Eth3"]
+            
+        - vlan_id: "21"
+          vni: "1021"
+          gw: "20.0.1.254/24"
+          sap: 
+            leaf-3: ["Eth3"]
+            leaf-4: ["Eth3"]

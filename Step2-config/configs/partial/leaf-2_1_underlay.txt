@@ -1,0 +1,50 @@
+!
+service routing protocols model multi-agent
+!
+hostname leaf-2
+!
+aaa authorization exec default local
+!
+username admin secret admin 
+!
+interface lo0
+   description for routing protocols
+   ip address 192.168.0.2/32
+interface lo1
+   description for VxLAN Tunnel
+   ip address 192.168.1.2/32
+interface Eth1
+   description to_spine-1
+   ip address 172.16.1.6/30
+interface Eth2
+   description to_spine-2
+   ip address 172.16.1.14/30
+!
+ip routing
+!
+ip prefix-list pl-loopback
+   seq 10 permit 192.168.0.2/32
+   seq 20 permit 192.168.1.2/32
+!
+route-map rm-loopback permit 10
+   match ip address prefix-list pl-loopback
+!
+router bgp 65001
+   router-id 192.168.0.2
+   distance bgp 20 200 200
+   maximum-paths 2
+   neighbor SPINE peer-group
+   neighbor SPINE remote-as 65000
+   neighbor SPINE allowas-in 1
+   neighbor SPINE route-map rm-loopback out
+   neighbor SPINE send-community
+   neighbor SPINE maximum-routes 30
+   neighbor 172.16.1.5 peer-group SPINE
+   neighbor 172.16.1.13 peer-group SPINE
+   redistribute connected route-map rm-loopback
+   !
+   address-family ipv4
+      neighbor SPINE activate
+   !
+      exit
+   exit

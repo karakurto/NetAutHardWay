@@ -1,0 +1,25 @@
+---
+- include: setup-dirs.yml
+  name: included playbook to dremoce/create config dirs
+  
+- hosts: all
+  name: create underlay/overlay/service configs
+  gather_facts: no 
+  connection: local
+  tags: [ create ]
+  vars:
+    configs_partial: "configs/partial" 
+    configs_full: "configs/full"    
+  roles:
+  - underlay_config
+  - overlay_config
+  - services_config
+  
+  post_tasks:
+  - assemble:
+      src: "{{ configs_partial }}"
+      dest: "{{ configs_full }}/{{ inventory_hostname }}.cfg"
+      regexp: "{{ inventory_hostname }}"
+
+
+

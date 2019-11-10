@@ -1,0 +1,45 @@
+!
+service routing protocols model multi-agent
+!
+hostname spine-2
+!
+aaa authorization exec default local
+!
+username admin secret admin 
+!
+interface lo0
+   description for routing protocols
+   ip address 192.168.2.2/32
+interface Eth1
+   description to_leaf-1
+   ip address 172.16.1.9/30
+interface Eth2
+   description to_leaf-2
+   ip address 172.16.1.13/30
+!
+ip routing
+!
+ip prefix-list pl-loopback
+   seq 10 permit 192.168.2.2/32
+!
+route-map rm-loopback permit 10
+   match ip address prefix-list pl-loopback
+!
+router bgp 65000
+   router-id 192.168.2.2
+   distance bgp 20 200 200
+   maximum-paths 2
+   neighbor LEAF peer-group
+   neighbor LEAF remote-as 65001
+   neighbor LEAF route-map rm-loopback out
+   neighbor LEAF send-community
+   neighbor LEAF maximum-routes 30
+   neighbor 172.16.1.10 peer-group LEAF
+   neighbor 172.16.1.14 peer-group LEAF
+   redistribute connected route-map rm-loopback
+   !
+   address-family ipv4
+      neighbor LEAF activate
+  !
+      exit
+   exit

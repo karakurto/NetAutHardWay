@@ -1,0 +1,5 @@
+---
+- template: 
+    src: templates/overlay.j2
+    dest: configs/partial/{{inventory_hostname}}_2_overlay.txt
+  name: create underlay configuration for each switch
