@@ -1,4 +1,5 @@
 NetAutHardWay
+
 Network Automation Examples Using Ansible "command" and "raw" modules
 
 # Network Automation - Hard Way
@@ -20,11 +21,14 @@ Under each part, there will be some parts like reports, configuration, CI/CD ext
 At least this is the plan. Let\`s see how much I can proceed.
 
 # How to Use
-1. Lab: includes files requited for lab setup. More details available on Ivan`s git repository.
+1. Lab: 
+includes files requited for lab setup. More details available on Ivan\`s git repository.
+
 2. Step1-report:
 find_ip.yml: collects and saves arp tables of a customer in a file and shows where the specified IP address is connected   
 find_mac.yml: collects and saves mac tables of a customer in a file and shows where the specified MAC address is connected    
 get_cust-ports.yml: collects and saves interfaces descriptions of the leaf switches and gives the list of service access points for the specified customer    
+
 3. Step2-config:
 This section creates underlay, overlay and services configurations using roles.
 create_configs.yml merges these configuration and creates the device configuration files.
