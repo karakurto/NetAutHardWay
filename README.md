@@ -4,7 +4,7 @@ Network Automation Examples Using Ansible "command" and "raw" modules
 # Network Automation - Hard Way
 This repository includes files to demonsrate how Ansible "raw" and "command" modules can be used to start with network automation.
 
-Lab topology is based on Ivan`s vEOS Leaf/Spine architecture. 
+Lab topology is based on Ivan\`s vEOS Leaf/Spine architecture. 
 I just added two Tiny Core VMs to simulate customer end points connected to by VxLAN Fabric.
 Tiny Cores helps when we want to create MAC/IP reports of our fabric.
 
