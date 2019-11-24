@@ -26,18 +26,18 @@ At least this is the plan. Let\`s see how much I can advance.
 1. Lab: 
 
 includes files requited for lab setup. More details available on Ivan\`s git repository: https://github.com/ipspace/NetOpsWorkshop/tree/master/topologies/EOS-Leaf-and-Spine
-As mentioned before, my lab is based on above lab and includes additional Tiny Core VMs, which consume less than 64MB RAM each and very usefull to generate MAC/IP addresses connected to the lab. They also support trunking with iproute2 utilities.
+As mentioned before, my lab is based on above lab and includes additional Tiny Core VMs, which consume less than 64MB RAM each and very useful to generate MAC/IP addresses connected to the lab. They also support trunking with iproute2 utilities.
 
 ```
 spine-1      spine-2
-       \    /
-        \  /
-         \/
-         /\
-        /  \
-       /    \    
+  |    \    /   |
+  |     \  /    |
+  |      \/     |
+  |      /\     |
+  |     /  \    |
+  |    /    \   |  
 leaf-1        leaf-2
-  |              |
+  |             |
 tiny-1        tiny-2
 ```
 
