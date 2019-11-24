@@ -43,4 +43,11 @@ This section creates underlay, overlay and services configurations using roles, 
   - diff_configs to see the differences between running config and pushed config
   - commit_configs to commit the configuration changes to the devices and to return the commit result.
 
+3. Step3-git:
 
+This section creates a new branch using the date as the branch name and reports saves configuration discrepancies between sto-be-config and actual-config by repeating the Step2 and making a diff using the Arista config session feature:
+- git_discrepancy_report uses multiple playbooks including:
+  - git_create_diff_branch.yml to pull the latest repo from GitHub and create a new branch
+  - create_configs and push_configs from Step2
+  - save_config_diffs.yml to report the diff for each device
+  - git_push_config_changes.yml to report the discrepancies by pushing the new branch to the GitHub
