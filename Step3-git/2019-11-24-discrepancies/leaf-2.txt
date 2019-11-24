@@ -1,0 +1,20 @@
+=======================================================
+Deviations from Expected Configuration on leaf-2
+=======================================================
+! This form of the route-target command is deprecated. Please specify one of evpn, vpn-ipv4, vpn-ipv6.
+! This form of the route-target command is deprecated. Please specify one of evpn, vpn-ipv4, vpn-ipv6.
+! Missing final 'end' command, adding automatically.
+Copy completed successfully.
+--- system:/running-config
++++ session:/2019-11-24-session-config
+@@ -14,7 +14,7 @@
+ !
+ aaa root secret sha512 $6$pfl6Dgg2IALZJrjZ$ZF.2zP5CSwOYnLOIIbRPbAtSHb7fzKybXR5cYeIktfPaZQ6PcwmuMd.s1BqBLHrhU7B1.TfJbhfLgC6VjSLrd/
+ !
+-username admin privilege 15 role network-admin secret sha512 $6$Mhvy7UznfGS9mlWo$6nRzUVycqaOrV/mslMwO5uOxF4Qs7CbUO5CVAVq/wG0etL7B8VKuWSDpZQP6QTo3zvcQYx12yy1Wj.9oAEdZB1
++username admin privilege 15 role network-admin secret sha512 $6$i.5mtdwIF8WD/Vev$SxY07bmi489iupmY/rPX1E.JH06FWjpIVmqr84/Xm8tlNj64wYH8pD.4/uYy234nnrdkpr54khPG/SMoRc8mC.
+ username vagrant privilege 15 role network-admin secret sha512 $6$j0mUxpx.DXidQH1Z$Bw5OCVJ4HoO8x8HnGks0Ms7yctxZ9/wLE5TPXJNXGKClHsigsy4QkSfUbMY7uNQVD1d21G5zdg1nm25KJmjxU.
+ !
+ vlan 10-11
+
+

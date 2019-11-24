@@ -1,0 +1,17 @@
+=======================================================
+Deviations from Expected Configuration on spine-1
+=======================================================
+Copy completed successfully.
+--- system:/running-config
++++ session:/2019-11-24-session-config
+@@ -14,7 +14,7 @@
+ !
+ aaa root secret sha512 $6$oHhpURsl7bFJ88fN$NMrdeITmYkoeUptpLAMBI4Lz2NyR5KeYp/4YmhiwJv3FH4jyzJK0VO1Yv79Sce3kntX.iBwCgPXrT7X48yRml0
+ !
+-username admin privilege 15 role network-admin secret sha512 $6$B0uqjHjpdNx6Ch4V$JOla6vRyCMoqYndgUgNoLmLyuGH9lpG3KuLezCeS0cc2spnnJe8ZbjB6XSheqZ1RT8rdpESGK8dQ6Wwj9s6pR.
++username admin privilege 15 role network-admin secret sha512 $6$piOlCHp5TC7TQIL3$.qekJI/RsTCSzrZZZS5qHCBZxCAJceRvwLhGWv9/oNTKV1Zm2gH/KbNrqqMMvB4zLkxg85FC0IcwIm5O5of6e.
+ username vagrant privilege 15 role network-admin secret sha512 $6$EO1EQLCWh5aDq0t5$uRDfwSnBO6QrVGpfNVD1cGHJyiPAnK6nkboxkFjKWYXkLltDHvBkNIRVoUddtTqQuT05VqtsvQQDV8WkZiogW.
+ !
+ interface Ethernet1
+
+
