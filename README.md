@@ -28,6 +28,19 @@ At least this is the plan. Let\`s see how much I can advance.
 includes files requited for lab setup. More details available on Ivan\`s git repository: https://github.com/ipspace/NetOpsWorkshop/tree/master/topologies/EOS-Leaf-and-Spine
 As mentioned before, my lab is based on above lab and includes additional Tiny Core VMs, which consume less than 64MB RAM each and very usefull to generate MAC/IP addresses connected to the lab. They also support trunking with iproute2 utilities.
 
+```
+spine-1      spine-2
+       \    /
+        \  /
+         \/
+         /\
+        /  \
+       /    \    
+leaf-1        leaf-2
+  |              |
+tiny-1        tiny-2
+```
+
 2. Step1-report:
 
 - find_ip.yml: collects and saves arp tables of a customer in a file and shows where the specified IP address is connected (switch name + port)
