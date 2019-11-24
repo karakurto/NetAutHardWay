@@ -1,0 +1,22 @@
+asn: "65000"
+router_id: "192.168.2.1"
+remote_asn: "65001"
+
+interfaces: 
+    - name: "lo0"
+      ip_address: "192.168.2.1/32"
+      desc: "for routing protocols"
+    - name: "Eth1"
+      ip_address: "172.16.1.1/30"
+      desc: "to_leaf-1"
+    - name: "Eth2"
+      ip_address: "172.16.1.5/30"
+      desc: "to_leaf-2"
+      
+peers_underlay:
+    - ip: "172.16.1.2"
+    - ip: "172.16.1.6"
+      
+peers_overlay:
+    - ip: "192.168.0.1"
+    - ip: "192.168.0.2"

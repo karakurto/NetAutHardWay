@@ -1,0 +1,25 @@
+- hosts: all
+  name: collect and save configuration discrepancies
+  gather_facts: no 
+  tags: [ collect ]
+  vars:
+    cli_commands:   "config session {{ ansible_user }}\ncopy flash:{{ inventory_hostname }}.cfg session-config\nshow session-config diffs"
+    output: "{{ hostvars['localhost']['timestamp'].stdout_lines[0] }}-discrepancies/{{inventory_hostname}}.txt"
+                   
+  tasks:
+    - raw: "{{ cli_commands }}"
+      register: config_diff
+     
+    - name: save config discrepancies
+      lineinfile:
+        line: |
+            =======================================================
+            Deviations from Expected Configuration on {{ inventory_hostname }}
+            =======================================================
+            {% for line in config_diff.stdout_lines %}
+            {{ line }}
+            {% endfor %}
+        dest: "{{ output }}"
+        create: yes
+      when: config_diff.stdout_lines[0] != ""
+      delegate_to: localhost

@@ -1,0 +1,25 @@
+---
+- name: create a new branch to store today`s configuration discrepancies
+  hosts: localhost
+  connection: local
+  vars:
+    git_repository: "/vagrant/Ansible\ Folder\ Setup/NetAutHardWay/" 
+  tasks:
+  - name: collect date and time for folder/file naming
+    shell: date +"%Y-%m-%d"
+    register: timestamp
+    
+  - name: make sure to use the latest data
+    shell: git pull
+    args:
+      chdir: "{{ git_repository }}"
+          
+  - name: create a new branch to store config discrepancies and check it out
+    shell: "git checkout -b config_diffs-{{ timestamp.stdout_lines[0] }}"
+    args:
+      chdir: "{{ git_repository }}"
+      
+  - name: create folder to store config discrepancies
+    file:
+      path: "{{ timestamp.stdout_lines[0] }}-discrepancies" 
+      state: directory
