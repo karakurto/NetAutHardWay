@@ -10,7 +10,7 @@
     register: timestamp
     
   - name: make sure to use the latest data
-    shell: git pull
+    shell: git pull origin master
     args:
       chdir: "{{ git_repository }}"
           

@@ -3,7 +3,7 @@
   gather_facts: no 
   tags: [ collect ]
   vars:
-    cli_commands:   "config session {{ ansible_user }}\ncopy flash:{{ inventory_hostname }}.cfg session-config\nshow session-config diffs"
+    cli_commands:   "config session {{ hostvars['localhost']['timestamp'].stdout_lines[0] }}\ncopy flash:{{ inventory_hostname }}.cfg session-config\nshow session-config diffs"
     output: "{{ hostvars['localhost']['timestamp'].stdout_lines[0] }}-discrepancies/{{inventory_hostname}}.txt"
                    
   tasks:
