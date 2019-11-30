@@ -9,7 +9,7 @@ pipeline {
     stage('StageTest2') {
       steps { 
         sh 'echo "Jenkins StageTest2"'
-        sh 'cat  nonexistingFile'
+        sh 'cat  Jenkinsfile'
       }
     }
     stage('StageTest3') {
