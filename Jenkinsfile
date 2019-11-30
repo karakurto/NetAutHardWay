@@ -9,12 +9,12 @@ pipeline {
     stage('StageTest2') {
       steps { 
         sh 'echo "Jenkins StageTest2"'
-        sh 'cat  ../Jenkinsfile'
+        sh 'cat  Jenkinsfile'
       }
     }
     stage('StageTest3') {
       steps { 
-        sh 'cat "Jenkins StageTest3"'
+        sh 'echo "Jenkins StageTest3"'
       }
     }
   }
