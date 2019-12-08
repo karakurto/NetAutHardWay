@@ -2,9 +2,16 @@
   gather_facts: no 
   tags: [ diff ]
   vars:
-    cli_commands:   "config session {{ ansible_user }}\ncopy flash:{{ inventory_hostname }}.cfg session-config\nshow session-config diffs"
+    cli_commands:   "config session {{ timestamp.stdout }}\ncopy flash:{{ inventory_hostname }}.cfg session-config\nshow session-config diffs"
                    
   tasks:
+  
+    - name: collect date and time for folder/file naming
+      shell: date +"%Y-%m-%d-%H-%M"
+      register: timestamp
+      delegate_to: localhost
+      run_once: true
+      
     - raw: "{{ cli_commands }}"
       register: diff
      

@@ -10,7 +10,7 @@ username admin secret {{ secret }}
 !
 {% for int in interfaces %}
 interface {{ int["name"] }}
-{%   if "eth" in int["name"] %}
+{%   if "Et" in int["name"] %}
    no switchport
 {%   endif %}
    description {{ int["desc"] }}
@@ -54,7 +54,6 @@ router bgp {{ asn }}
 {% if "spine" in inventory_hostname  %}
    neighbor LEAF peer-group
    neighbor LEAF remote-as {{ remote_asn }}
-   neighbor LEAF route-map rm-loopback out
    neighbor LEAF send-community
    neighbor LEAF maximum-routes 30
 {%   for peer in peers_underlay %}

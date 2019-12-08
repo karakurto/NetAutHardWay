@@ -2,7 +2,7 @@
   gather_facts: no 
   tags: [ commit ]
   vars:
-    cli_commands:   "config session {{ ansible_user }}\ncommit"
+    cli_commands:   "config session {{ timestamp.stdout }}\ncommit"
                    
   tasks:
     - raw: "{{ cli_commands }}"
