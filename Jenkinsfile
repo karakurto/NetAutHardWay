@@ -1,22 +1,26 @@
 pipeline {
-  agent any
-  stages {
-    stage('StageTest1')
-    {
-      steps {
-        sh 'echo "Jenkins StageTest1"' 
-      }
+    agent any
+    stages {
+        stage('Integration') {
+ 	when{
+            expression {
+                return env.BRANCH_NAME != 'master';
+            } 
+	}
+            steps {
+                sh 'pwd'
+            }
+        }
+        stage('Delivery') {
+ 	when{
+            expression {
+                return env.BRANCH_NAME != 'master';
+            } 
+	}
+            steps {
+                sh 'whoami'				
+            }
+        }
+        
     }
-    stage('StageTest2') {
-      steps { 
-        sh 'echo "Jenkins StageTest2"'
-        sh 'cat  Jenkinsfile'
-      }
-    }
-    stage('StageTest3') {
-      steps { 
-        sh 'echo "Jenkins StageTest3"'
-      }
-    }
-  }
 }
