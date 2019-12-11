@@ -8,7 +8,7 @@ pipeline {
             } 
 	}
             steps {
-                sh 'ansible-playbook -i hosts Step2-config/config_delivery.yml'
+                sh 'ansible-playbook -i Step2-config/hosts Step2-config/config_delivery.yml'
             }
         }
         stage('Delivery') {
