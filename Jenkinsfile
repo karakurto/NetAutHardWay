@@ -1,11 +1,12 @@
 pipeline {
     agent any
+    when{
+         expression {
+            return env.BRANCH_NAME != 'master';
+            } 
+	 }
     stages {
         stage('Integration') {
-		    when{
-            expression {
-            return env.BRANCH_NAME != 'master';
-        }
             steps {
                 sh 'pwd'
             }
