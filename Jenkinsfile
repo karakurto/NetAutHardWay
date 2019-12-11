@@ -1,8 +1,7 @@
 pipeline {
   agent any
   stages {
-    stage('StageTest1')
-    dir("~"){
+    stage('StageTest1'){
       steps {
         sh 'echo "Jenkins StageTest1"' 
       }
