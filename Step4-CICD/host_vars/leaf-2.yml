@@ -1,0 +1,25 @@
+asn: "65001"
+router_id: "192.168.0.2"
+remote_asn: "65000"
+
+interfaces: 
+    - name: "lo0"
+      ip_address: "192.168.0.2/32"
+      desc: "for routing protocols"
+    - name: "lo1"
+      desc: "for VxLAN Tunnel"     
+      ip_address: "192.168.1.2/32"      
+    - name: "Eth1"
+      ip_address: "172.16.1.6/30"
+      desc: "to_spine-1"
+    - name: "Eth2"
+      ip_address: "172.16.1.14/30"
+      desc: "to_spine-2"
+      
+peers_underlay:
+    - ip: "172.16.1.5"
+    - ip: "172.16.1.13"
+      
+peers_overlay:
+    - ip: "192.168.2.1"
+    - ip: "192.168.2.2"
