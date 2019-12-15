@@ -8,7 +8,6 @@ pipeline {
             } 
 	}
             steps {
-                sh 'ansible-playbook -i Step2-config/hosts Step2-config/config_delivery.yml'
 		sh 'find ./Step*/  \\( -name "*.yml" -o -name "*.yaml" \\) -exec yamllint -c ./my_yamllint_config.yml {} +' 
                 sh 'ansible-playbook -i Step2-config/hosts Step2-config/config_delivery.yml'
 		sh 'ansible-playbook -i Step4-CICD/hosts Step4-config/integration_tests/bgp_test.yml'
