@@ -32,7 +32,13 @@ router bgp 65001
    !
       exit
     exit
-interface Eth3
+interface Et3
+   switchport mode trunk
+   switchport trunk allowed vlan none
+   description cust-1
+   switchport trunk allowed vlan add 10
+!
+interface Et4
    description cust-1
    switchport trunk allowed vlan add 10
 !
@@ -55,7 +61,9 @@ router bgp 65001
    !
       exit
     exit
-interface Eth3
+interface Et3
+   switchport mode trunk
+   switchport trunk allowed vlan none
    description cust-1
    switchport trunk allowed vlan add 11
 !

@@ -1,13 +1,11 @@
+---
 - hosts: all
-  gather_facts: no 
-  tags: [ push ]
+  gather_facts: false
+  tags: [push]
   vars:
-    configs_partial: "configs/partial" 
+    configs_partial: "configs/partial"
     configs_full: "configs/full"
-                       
+
   tasks:
     - command: "sshpass -p {{ ansible_ssh_pass }} scp -P {{ ansible_port }} {{ configs_full }}/{{ inventory_hostname }}.cfg {{ ansible_user }}@{{ ansible_host }}:"
       delegate_to: 127.0.0.1
-     
-
-

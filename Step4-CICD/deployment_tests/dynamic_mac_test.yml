@@ -1,35 +1,32 @@
-
+---
 - hosts: leaf
-  gather_facts: no 
-  tags: [ verify ]
-  vars_files: 
-    - ../Step2-config/roles/services_config/vars/main.yml 
-   
+  gather_facts: false
+  tags: [verify]
+  vars_files:
+    - ../Step2-config/roles/services_config/vars/main.yml
+
   tasks:
     - name: collect the vlan databse
       raw: "show mac address-table"
       register: mac_table
-        
+
     - name: loop through the services var file and save vlan/port mappings for the switch
       set_fact:
         fact1: "{{ item.1.vlan_id }}"
-        fact2: "{{ item.1.sap[inventory_hostname] }}" 
+        fact2: "{{ item.1.sap[inventory_hostname] }}"
       when:
-        - inventory_hostname in item.1.sap   
+        - inventory_hostname in item.1.sap
       with_subelements:
-        -  "{{ customers }}"
-        -  services
+        - "{{ customers }}"
+        - services
       register: vlan_port_mappings
-    
+
     - name: compare the vlan/port mappings with mac table
       fail:
-        msg: "no MACs seen in vlan {{item.0.ansible_facts.fact1 }} on port {{ item.1 }}"     
+        msg: "no MACs seen in vlan {{item.0.ansible_facts.fact1 }} on port {{ item.1 }}"
       failed_when: not mac_table.stdout_lines is regex(item.0.ansible_facts.fact1 + '.*' + item.1)
       when:
         - item.0.ansible_facts is defined
       with_subelements:
-        -  "{{ vlan_port_mappings.results }}"
-        -  ansible_facts.fact2        
-        
-
-  
+        - "{{ vlan_port_mappings.results }}"
+        - ansible_facts.fact2

@@ -4,3 +4,6 @@ extends: default
 rules:
   new-lines:
     type: dos
+
+  line-length:
+    max: 180

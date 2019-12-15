@@ -1,14 +1,12 @@
+---
 - hosts: all
-  gather_facts: no 
-  tags: [ commit ]
+  gather_facts: false
+  tags: [commit]
   vars:
-    cli_commands:   "config session {{ timestamp.stdout }}\ncommit"
-                   
+    cli_commands: "config session {{ timestamp.stdout }}\ncommit"
+
   tasks:
     - raw: "{{ cli_commands }}"
       register: commit_status
-      
-    - debug: var=commit_status.stdout_lines
-      
-    
 
+    - debug: var=commit_status.stdout_lines

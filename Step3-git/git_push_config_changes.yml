@@ -1,14 +1,15 @@
+---
 - name: push configurations discrepancies to GitHub
   hosts: localhost
   connection: local
   tags: [push]
   vars:
-    git_repository: "/vagrant/Ansible\ Folder\ Setup/NetAutHardWay/" 
+    git_repository: "/vagrant/Ansible\ Folder\ Setup/NetAutHardWay/"
   tasks:
-  - name: add, commit and push config discrepancies
-    shell: |
-      git add .
-      git commit -m "reporting configuration discrepancies as of {{ timestamp.stdout_lines[0] }}"
-      git push --set-upstream origin config_diffs-{{ timestamp.stdout_lines[0] }}
-    args:
-      chdir: "{{ git_repository }}"
+    - name: add, commit and push config discrepancies
+      shell: |
+        git add .
+        git commit -m "reporting configuration discrepancies as of {{ timestamp.stdout_lines[0] }}"
+        git push --set-upstream origin config_diffs-{{ timestamp.stdout_lines[0] }}
+      args:
+        chdir: "{{ git_repository }}"

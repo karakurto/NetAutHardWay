@@ -2,22 +2,22 @@
 - hosts: localhost
   name: create directories to store configuration files
   connection: local
-  gather_facts: no
+  gather_facts: false
   run_once: true
-  tags: [ create ]
+  tags: [create]
   vars:
     configs_partial: "configs/partial/"
     configs_full: "configs/full"
   tasks:
-  - file:
-      path: "{{ configs_partial }}" 
-      state: absent 
-  - file:
-      path: "{{ configs_partial }}" 
-      state: directory   
-  - file:
-      path: "{{ configs_full }}" 
-      state: absent 
-  - file:
-      path: "{{ configs_full }}"
-      state: directory 
+    - file:
+        path: "{{ configs_partial }}"
+        state: absent
+    - file:
+        path: "{{ configs_partial }}"
+        state: directory
+    - file:
+        path: "{{ configs_full }}"
+        state: absent
+    - file:
+        path: "{{ configs_full }}"
+        state: directory

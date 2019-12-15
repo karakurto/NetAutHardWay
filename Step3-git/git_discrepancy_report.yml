@@ -1,20 +1,20 @@
 ---
 - include: git_create_diff_branch.yml
   name: create a new branch to store today`s configuration discrepancies
-  tags: [ branch ]
-  
+  tags: [branch]
+
 - include: ../Step2-config/create_configs.yml
   name: re-create and merge underlay, overlay and services configs using the latest data pulled in the first play
-  tags: [ config ]
-  
+  tags: [config]
+
 - include: ../Step2-config/push_configs.yml
-  name: scp newly generated device configs 
-  tags: [ deliver ]
-  
+  name: scp newly generated device configs
+  tags: [deliver]
+
 - include: save_config_diffs.yml
-  name: collect and save configuration discrepancies 
-  tags: [ collect ]
-  
+  name: collect and save configuration discrepancies
+  tags: [collect]
+
 - include: git_push_config_changes.yml
-  name: push configurations discrepancies to GitHub 
-  tags: [ push ]
+  name: push configurations discrepancies to GitHub
+  tags: [push]

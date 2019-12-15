@@ -1,26 +1,20 @@
-
+---
 - hosts: leaf
-  gather_facts: no 
-  tags: [ verify ]
+  gather_facts: false
+  tags: [verify]
 
   tasks:
-    - name: collect the vlan databse
+    - name: collect the vlan database
       raw: "show vlan brief"
       register: vlan_db
-      
-    - debug: 
-        var: vlan_db.stdout
-        var: inventory_hostname, vlan_db        
-    
-    - name: compare vlan/port mappings against the vlan_db 
+
+    - name: compare vlan/port mappings against the vlan_db
       set_fact:
         fact1: "{{ item.1.vlan_id }}"
         fact2: "{{ item.0.name }}"
-        fact3: "{{ item.1.sap[inventory_hostname] | join('.*')}}" 
+        fact3: "{{ item.1.sap[inventory_hostname] | join('.*')}}"
       when: "inventory_hostname in item.1.sap"
       failed_when: not vlan_db.stdout_lines is regex(fact1 + '.*' + fact2 + '.*' + fact3)
       with_subelements:
-        -  "{{ customers }}"
-        -  services
-
-  
+        - "{{ customers }}"
+        - services
