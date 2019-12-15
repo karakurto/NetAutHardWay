@@ -1,31 +1,32 @@
+---
 - hosts: leaf
   serial: 1
-  gather_facts: no 
+  gather_facts: false
   vars:
-    cli_commands:   "show ip arp vrf {{ customer }}"
+    cli_commands: "show ip arp vrf {{ customer }}"
     output: "get_outputs/{{ customer }}_arps.txt"
     cust: "{{ customer }}"
     ip: "{{ ip_address }}"
-                   
+
   pre_tasks:
     - file:
         path: "{{ output }}"
         state: absent
       delegate_to: localhost
-      run_once: True
-      when: inventory_hostname == ansible_play_hosts_all[0] 
+      run_once: true
+      when: inventory_hostname == ansible_play_hosts_all[0]
     - file:
         path: "{{ output }}"
         state: touch
       delegate_to: localhost
-      run_once: True
-      when: inventory_hostname == ansible_play_hosts_all[0] 
+      run_once: true
+      when: inventory_hostname == ansible_play_hosts_all[0]
 
   tasks:
 
     - raw: "{{ cli_commands }}"
       register: cli_output
-      
+
     - name: save ARP tables
       lineinfile:
         line: |
@@ -36,16 +37,16 @@
             {{ inventory_hostname}} {{ cust }} {{ line }}
             {% endfor %}
         dest: "{{ output }}"
-        create: no
+        create: false
       delegate_to: localhost
-      
-  post_tasks:      
+
+  post_tasks:
     - raw: "grep {{ ip }} {{output}} | cat"
       register: grepOutput
       delegate_to: localhost
-      run_once: True
+      run_once: true
       when: inventory_hostname == ansible_play_hosts_all[-1]
     - debug: var=grepOutput.stdout_lines
       delegate_to: localhost
-      run_once: True
-      when: inventory_hostname == ansible_play_hosts_all[-1] 
+      run_once: false
+      when: inventory_hostname == ansible_play_hosts_all[-1]

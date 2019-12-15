@@ -1,9 +1,10 @@
+---
 - hosts: all
-  gather_facts: no 
-  tags: [ verify ]
+  gather_facts: false
+  tags: [verify]
   vars:
     bgp_underlay: "show ip bgp summary | i {{ item['ip'] }}.*Estab"
-    bgp_overlay: "show bgp evpn summary| i {{ item['ip'] }}.*Estab"                   
+    bgp_overlay: "show bgp evpn summary| i {{ item['ip'] }}.*Estab"
   tasks:
     - name: "underlay bgp test"
       raw: "{{ bgp_underlay }}"
@@ -15,5 +16,4 @@
       raw: "{{ bgp_overlay }}"
       register: overlay_status
       with_items: "{{ peers_overlay }}"
-      failed_when: overlay_status.stdout == ""    
-  
+      failed_when: overlay_status.stdout == ""

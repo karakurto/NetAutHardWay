@@ -1,5 +1,5 @@
 ---
-- template: 
+- template:
     src: templates/underlay.j2
     dest: configs/partial/{{inventory_hostname}}_1_underlay.txt
   name: create underlay configuration for each switch

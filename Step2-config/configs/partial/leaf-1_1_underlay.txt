@@ -14,9 +14,11 @@ interface lo1
    description for VxLAN Tunnel
    ip address 192.168.1.1/32
 interface Eth1
+   no switchport
    description to_spine-1
    ip address 172.16.1.2/30
 interface Eth2
+   no switchport
    description to_spine-1
    ip address 172.16.1.10/30
 !

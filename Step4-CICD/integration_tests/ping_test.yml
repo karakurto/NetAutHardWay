@@ -1,19 +1,19 @@
+---
 - hosts: all
-  gather_facts: no 
-  tags: [ verify ]
+  gather_facts: false
+  tags: [verify]
   vars:
     cli_commands: "ping {{ item['ip'] }}"
-                   
+
   tasks:
     - name: "underlay ping test"
       raw: "{{ cli_commands }}"
       with_items: "{{ peers_underlay }}"
       register: underlay_status
-      failed_when:  "not 'icmp_seq' in underlay_status.stdout"
-      
+      failed_when: "not 'icmp_seq' in underlay_status.stdout"
+
     - name: "overlay ping test"
       raw: "{{ cli_commands }}"
       with_items: "{{ peers_overlay }}"
       register: overlay_status
-      failed_when:  "not 'icmp_seq' in overlay_status.stdout"
-      
+      failed_when: "not 'icmp_seq' in overlay_status.stdout"

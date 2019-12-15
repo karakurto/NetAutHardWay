@@ -1,37 +1,34 @@
-
+---
 - hosts: leaf
-  gather_facts: no 
-  tags: [ verify ]
-  vars_files: 
-    - ../Step2-config/roles/services_config/vars/main.yml 
-   
+  gather_facts: false
+  tags: [verify]
+  vars_files:
+    - ../Step2-config/roles/services_config/vars/main.yml
+
   tasks:
     - name: collect the vlan databse
       raw: "show interfaces status"
       register: if_status
-        
+
     - name: loop through the services var file and save to be configured ports for the switch
       set_fact:
         fact1: "{{ item.1.vlan_id }}"
-        fact2: "{{ item.1.sap[inventory_hostname] }}" 
+        fact2: "{{ item.1.sap[inventory_hostname] }}"
       when:
-        - inventory_hostname in item.1.sap   
+        - inventory_hostname in item.1.sap
       with_subelements:
-        -  "{{ customers }}"
-        -  services
+        - "{{ customers }}"
+        - services
       register: used_ports
-      
+
     - debug: var=used_ports
-    
+
     - name: check the status of configured ports
       fail:
-        msg: "port {{ item.1 }} has a connectivity issue. Impacted VLAN: {{ item.0.ansible_facts.fact1 }}"     
+        msg: "port {{ item.1 }} has a connectivity issue. Impacted VLAN: {{ item.0.ansible_facts.fact1 }}"
       failed_when: not if_status.stdout is regex(item.1 + '.*' + 'connected')
       when:
         - item.0.ansible_facts is defined
       with_subelements:
-        -  "{{ used_ports.results }}"
-        -  ansible_facts.fact2        
-        
-
-  
+        - "{{ used_ports.results }}"
+        - ansible_facts.fact2

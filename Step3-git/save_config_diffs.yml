@@ -1,15 +1,16 @@
+---
 - hosts: all
   name: collect and save configuration discrepancies
-  gather_facts: no 
-  tags: [ collect ]
+  gather_facts: false
+  tags: [collect]
   vars:
-    cli_commands:   "config session {{ hostvars['localhost']['timestamp'].stdout_lines[0] }}\ncopy flash:{{ inventory_hostname }}.cfg session-config\nshow session-config diffs"
+    cli_commands: "config session {{ hostvars['localhost']['timestamp'].stdout_lines[0] }}\ncopy flash:{{ inventory_hostname }}.cfg session-config\nshow session-config diffs"
     output: "{{ hostvars['localhost']['timestamp'].stdout_lines[0] }}-discrepancies/{{inventory_hostname}}.txt"
-                   
+
   tasks:
     - raw: "{{ cli_commands }}"
       register: config_diff
-     
+
     - name: save config discrepancies
       lineinfile:
         line: |
@@ -20,6 +21,6 @@
             {{ line }}
             {% endfor %}
         dest: "{{ output }}"
-        create: yes
+        create: true
       when: config_diff.stdout_lines[0] != ""
       delegate_to: localhost

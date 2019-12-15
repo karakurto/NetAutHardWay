@@ -1,5 +1,5 @@
 ---
-- template: 
+- template:
     src: services.j2
     dest: configs/partial/{{inventory_hostname}}_3_services.txt
   name: create services configuration for each devices

@@ -1,4 +1,4 @@
----
+---  ### alterntive play to do the same thing in bgp_test.yml file
 - hosts: all
   gather_facts: false
   tags: [verify]
