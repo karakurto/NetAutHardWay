@@ -9,7 +9,7 @@ pipeline {
 	}
             steps {
                 sh 'ansible-playbook -i Step2-config/hosts Step2-config/config_delivery.yml'
-		sh 'find ./Step*/  \( -name "*.yml" -o -name "*.yaml" \) -exec yamllint -c ./my_yamllint_config.yml {} +' 
+		sh 'find ./Step*/  \\( -name "*.yml" -o -name "*.yaml" \\) -exec yamllint -c ./my_yamllint_config.yml {} +' 
                 sh 'ansible-playbook -i Step2-config/hosts Step2-config/config_delivery.yml'
 		sh 'ansible-playbook -i Step4-CICD/hosts Step4-config/integration_tests/bgp_test.yml'
 		sh 'ansible-playbook -i Step4-CICD/hosts Step4-config/integration_tests/ping_test.yml'
@@ -24,7 +24,7 @@ pipeline {
 	}
             steps {
 		sh 'git pull origin master'
-		sh 'find ./Step*/  \( -name "*.yml" -o -name "*.yaml" \) -exec yamllint -c ./my_yamllint_config.yml {} +' 
+		sh 'find ./Step*/  \\( -name "*.yml" -o -name "*.yaml" \\) -exec yamllint -c ./my_yamllint_config.yml {} +' 
                 sh 'ansible-playbook -i Step2-config/hosts Step2-config/config_delivery.yml'
 		sh 'ansible-playbook -i Step4-CICD/hosts Step4-config/integration_tests/bgp_test.yml'
 		sh 'ansible-playbook -i Step4-CICD/hosts Step4-config/integration_tests/ping_test.yml'
@@ -38,8 +38,11 @@ pipeline {
             } 
 	}
             steps {
-		input 'Are you you sure to proceed with Prod Depyloment?\nLocal branch will be pushed to the GitHub and this will trigger a deployment to the Live Network''	
-                sh 'git push origin HEAD:master'
+		input """
+		      Are you you sure to proceed with Prod Depyloment?
+		      Local branch will be pushed to the GitHub and this will trigger a deployment to the Live Network	
+                """
+		sh 'git push origin HEAD:master'
 	    }
         }
 
@@ -50,7 +53,7 @@ pipeline {
             } 
 	}
             steps {
-		sh 'find ./Step*/  \( -name "*.yml" -o -name "*.yaml" \) -exec yamllint -c ./my_yamllint_config.yml {} +' 
+		sh 'find ./Step*/  \\( -name "*.yml" -o -name "*.yaml" \\) -exec yamllint -c ./my_yamllint_config.yml {} +' 
                 sh 'ansible-playbook -i Step2-config/hosts Step2-config/config_delivery.yml'
 		sh 'ansible-playbook -i Step4-CICD/hosts Step4-config/integration_tests/bgp_test.yml'
 		sh 'ansible-playbook -i Step4-CICD/hosts Step4-config/integration_tests/ping_test.yml'
