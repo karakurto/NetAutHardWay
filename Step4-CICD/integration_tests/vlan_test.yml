@@ -3,7 +3,7 @@
   gather_facts: false
   tags: [verify]
   vars_files:
-    - ./Step2-config/roles/services_config/vars/main.yml
+    - ../../../Step2-config/roles/services_config/vars/main.yml
 
   tasks:
     - name: collect the vlan database
