@@ -50,7 +50,7 @@ pipeline {
         stage('Deployment') {
  	when{
             expression {
-                return env.BRANCH_NAME = 'master';
+                return env.BRANCH_NAME = 'NetLab_master';
             } 
 	}
             steps {
@@ -64,7 +64,7 @@ pipeline {
         stage('Post-Deployment') {
  	when{
             expression {
-                return env.BRANCH_NAME = 'master';
+                return env.BRANCH_NAME = 'NetLab_master';
             } 
 	}
             steps {
