@@ -10,10 +10,10 @@ pipeline {
             steps {
                 sh 'git pull'
 		sh 'find ./Step*/  \\( -name "*.yml" -o -name "*.yaml" \\) -exec yamllint -c ./my_yamllint_config.yml {} +' 
-                sh 'ansible-playbook -i Step2-config/hosts Step2-config/config_delivery.yml'
-		sh 'ansible-playbook -i Step4-CICD/hosts Step4-CICD/integration_tests/bgp_test.yml'
-		sh 'ansible-playbook -i Step4-CICD/hosts Step4-CICD/integration_tests/ping_test.yml'
-		sh 'ansible-playbook -i Step4-CICD/hosts Step4-CICD/integration_tests/vlan_test.yml'
+                sh 'ansible-playbook -i hosts Step2-config/config_delivery.yml'
+		sh 'ansible-playbook -i hosts Step4-CICD/integration_tests/bgp_test.yml'
+		sh 'ansible-playbook -i hosts Step4-CICD/integration_tests/ping_test.yml'
+		sh 'ansible-playbook -i hosts Step4-CICD/integration_tests/vlan_test.yml'
             }
         }
         stage('Delivery') {
@@ -25,10 +25,10 @@ pipeline {
             steps {
 		sh 'git pull origin master'
 		sh 'find ./Step*/  \\( -name "*.yml" -o -name "*.yaml" \\) -exec yamllint -c ./my_yamllint_config.yml {} +' 
-                sh 'ansible-playbook -i Step2-config/hosts Step2-config/config_delivery.yml'
-		sh 'ansible-playbook -i Step4-CICD/hosts Step4-config/integration_tests/bgp_test.yml'
-		sh 'ansible-playbook -i Step4-CICD/hosts Step4-config/integration_tests/ping_test.yml'
-		sh 'ansible-playbook -i Step4-CICD/hosts Step4-config/integration_tests/vlan_test.yml'				
+                sh 'ansible-playbook -i hosts Step2-config/config_delivery.yml'
+		sh 'ansible-playbook -i hosts Step4-config/integration_tests/bgp_test.yml'
+		sh 'ansible-playbook -i hosts Step4-config/integration_tests/ping_test.yml'
+		sh 'ansible-playbook -i hosts Step4-config/integration_tests/vlan_test.yml'				
             }
         }
         stage('Deployment Approval') {
@@ -54,10 +54,10 @@ pipeline {
 	}
             steps {
 		sh 'find ./Step*/  \\( -name "*.yml" -o -name "*.yaml" \\) -exec yamllint -c ./my_yamllint_config.yml {} +' 
-                sh 'ansible-playbook -i Step2-config/hosts Step2-config/config_delivery.yml'
-		sh 'ansible-playbook -i Step4-CICD/hosts Step4-CICD/integration_tests/bgp_test.yml'
-		sh 'ansible-playbook -i Step4-CICD/hosts Step4-CICD/integration_tests/ping_test.yml'
-		sh 'ansible-playbook -i Step4-CICD/hosts Step4-CICD/integration_tests/vlan_test.yml'				
+                sh 'ansible-playbook -i hosts Step2-config/config_delivery.yml'
+		sh 'ansible-playbook -i hosts Step4-CICD/integration_tests/bgp_test.yml'
+		sh 'ansible-playbook -i hosts Step4-CICD/integration_tests/ping_test.yml'
+		sh 'ansible-playbook -i hosts Step4-CICD/integration_tests/vlan_test.yml'				
             }
         }
         stage('Post-Deployment') {
@@ -67,8 +67,8 @@ pipeline {
             } 
 	}
             steps {
-		sh 'ansible-playbook -i Step4-CICD/hosts Step4-CICD/deployment_tests/port_status_test.yml'
-		sh 'ansible-playbook -i Step4-CICD/hosts Step4-CICD/deployment_tests/dynamic_status_test.yml'				
+		sh 'ansible-playbook -i hosts Step4-CICD/deployment_tests/port_status_test.yml'
+		sh 'ansible-playbook -i hosts Step4-CICD/deployment_tests/dynamic_status_test.yml'				
             }
         }
     }
