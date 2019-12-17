@@ -49,10 +49,8 @@ pipeline {
 
         stage('Deployment') {
  	when{
-            expression {
-                return env.BRANCH_NAME = 'NetLab_master';
-            } 
-	}
+            branch  'master'
+            }
             steps {
 		sh 'find ./Step*/  \\( -name "*.yml" -o -name "*.yaml" \\) -exec yamllint -c ./my_yamllint_config.yml {} +' 
                 sh 'ansible-playbook -i hosts Step2-config/config_delivery.yml'
@@ -63,9 +61,8 @@ pipeline {
         }
         stage('Post-Deployment') {
  	when{
-            expression {
-                return env.BRANCH_NAME = 'NetLab_master';
-            } 
+            branch  'master'
+            }
 	}
             steps {
 		sh 'ansible-playbook -i hosts Step4-CICD/deployment_tests/port_status_test.yml'
