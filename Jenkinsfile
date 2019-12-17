@@ -42,6 +42,7 @@ pipeline {
 		      Are you you sure to proceed with Prod Depyloment?
 		      Local branch will be pushed to the GitHub and this will trigger a deployment to the Live Network	
                 """
+		sh 'whoami'
 		sh 'git push origin HEAD:master'
 	    }
         }
