@@ -26,9 +26,9 @@ pipeline {
 		sh 'git pull origin master'
 		sh 'find ./Step*/  \\( -name "*.yml" -o -name "*.yaml" \\) -exec yamllint -c ./my_yamllint_config.yml {} +' 
                 sh 'ansible-playbook -i hosts Step2-config/config_delivery.yml'
-		sh 'ansible-playbook -i hosts Step4-config/integration_tests/bgp_test.yml'
-		sh 'ansible-playbook -i hosts Step4-config/integration_tests/ping_test.yml'
-		sh 'ansible-playbook -i hosts Step4-config/integration_tests/vlan_test.yml'				
+		sh 'ansible-playbook -i hosts Step4-CICD/integration_tests/bgp_test.yml'
+		sh 'ansible-playbook -i hosts Step4-CICD/integration_tests/ping_test.yml'
+		sh 'ansible-playbook -i hosts Step4-CICD/integration_tests/vlan_test.yml'				
             }
         }
         stage('Deployment Approval') {
