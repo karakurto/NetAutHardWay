@@ -73,6 +73,7 @@ This section tries to implement basic SW Development Practices in Network Change
 - Delivery: Tests after I pull the master at GitHub to my feature branch. Basically I repeat the above tests after I merge my feature branch with the latest master branch.
 
 There will be an approval required at this stage to proceed further. Then the local branch will be pushed to the GitHub master branch.
+Note: Next steps are not working as expected. Pipiline is broken at the moment.
 
 - Deployment: In real life this would go and deploy the configuration on production and perform the same tests in the above steps.
 - Post-Deployment: In real life this would go  and check the status of customer ports and whether we see any MAC addresses on those ports.
