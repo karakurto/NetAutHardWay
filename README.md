@@ -1,6 +1,6 @@
 *NetAutHardWay*
 
-*Network Automation Examples Using Ansible "command" and "raw" modules*
+*Network Automation Examples Using Ansible "command", "raw" and "shell" modules*
 
 # Network Automation - Hard Way
 This repository includes files to demonstrate how Ansible "raw" and "command" modules can be used to start with network automation.
