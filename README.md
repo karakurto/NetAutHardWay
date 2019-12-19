@@ -64,3 +64,15 @@ This section creates a new branch using the date as the branch name and reports 
   - create_configs and push_configs from Step2
   - save_config_diffs.yml to report the diff for each device
   - git_push_config_changes.yml to report the discrepancies by pushing the new branch to the GitHub
+
+4. Step4-CICD:
+
+This section tries to implement basic SW Development Practices in Network Change Management. I tried to use Jenkins pipeline approach to run some tests automatically on the network configuration described as YAML/Jinja files. I am also using the same virtual lab for integration and delivery tests and I do not fire up a test lab on the fly for these tests because unlike many others\` lab, this lab takes 10+ minutes to come up on my laptop.
+- Integration: Tests on the feature branch (in my case the branch called "jenkinsbranch")
+  - basic bgp and ping connectivity tests to make sure that fabric is configured correctly. Another VLAN test to make sure services      configuration for customer are deployed correctly (Here I check if each customer VLAN/Port is implemented as described in the services YAML file)
+- Delivery: Tests after I pull the master at GitHub to my feature branch. Basically I repeat the above tests after I merge my feature branch with the latest master branch.
+
+There will be an approval required at this stage to proceed further. Then the local branch will be pushed to the GitHub master branch.
+
+- Deployment: In real life this would go and deploy the configuration on production and perform the same tests in the above steps.
+- Post-Deployment: In real life this would go  and check the status of customer ports and whether we see any MAC addresses on those ports.
