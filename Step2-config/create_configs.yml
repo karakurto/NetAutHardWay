@@ -7,6 +7,8 @@
   gather_facts: false
   connection: local
   tags: [create]
+  vars_files:
+    - ../customer-services.yml
   vars:
     configs_partial: "configs/partial"
     configs_full: "configs/full"
