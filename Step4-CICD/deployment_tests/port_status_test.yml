@@ -21,8 +21,6 @@
         - services
       register: used_ports
 
-    - debug: var=used_ports
-
     - name: check the status of configured ports
       fail:
         msg: "port {{ item.1 }} has a connectivity issue. Impacted VLAN: {{ item.0.ansible_facts.fact1 }}"

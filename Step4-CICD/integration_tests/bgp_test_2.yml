@@ -5,14 +5,14 @@
   vars:
     bgp_underlay: "show ip bgp summary"
     bgp_overlay: "show bgp evpn summary"
-    pattern: '{{ item.ip }}(.*)Estab'
+    pattern: '{{ item.ip }}.*Estab'
 
   tasks:
     - name: "underlay bgp test"
       raw: "{{ bgp_underlay }}"
       with_items: "{{ peers_underlay }}"
       register: underlay_status
-      failed_when: not underlay_status.stdout is regex(pattern)
+      failed_when: not underlay_status.stdout is regex(item["ip"] + '.*Estab')
 
     - name: "overlay bgp test"
       raw: "{{ bgp_overlay }}"

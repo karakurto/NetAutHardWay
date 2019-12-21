@@ -1,11 +1,10 @@
 ---
 - hosts: leaf
-  serial: 1
   gather_facts: false
   vars:
-    cli_commands: "show mac address-table"
-    output: "get_outputs/mactables.txt"
-    mac: "mac"
+    cli_commands: "show mac address-table address {{ mac_address }}"
+    output: "get_outputs"
+    mac: "{{ mac_address }}"
 
   pre_tasks:
     - file:
@@ -13,39 +12,35 @@
         state: absent
       delegate_to: localhost
       run_once: true
-      when: inventory_hostname == ansible_play_hosts_all[0]
+
     - file:
         path: "{{ output }}"
-        state: touch
+        state: directory
       delegate_to: localhost
       run_once: true
-      when: inventory_hostname == ansible_play_hosts_all[0]
 
   tasks:
 
     - raw: "{{ cli_commands }}"
       register: cli_output
 
-    - name: save MAC tables
-      lineinfile:
-        line: |
+    - name: save MAC entries
+      copy:
+        content: |
             =====================================
-            MAC Table of {{ inventory_hostname }}
+            {{ mac }} seen on {{ inventory_hostname}}
             =====================================
-            {% for line in cli_output.stdout_lines[5:-8] %}
-            {{ inventory_hostname}} {{ line }}
+            {% for line in cli_output.stdout_lines[1:] %}
+            {{ line }}
             {% endfor %}
-        dest: "{{ output }}"
-        create: false
+            
+        dest: "{{ output }}/{{ inventory_hostname}}_{{ mac }}_mac.txt"
       delegate_to: localhost
+      when: "mac in cli_output.stdout"
 
   post_tasks:
-    - raw: "grep {{ mac }} {{output}} | cat"
-      register: grepOutput
+    - assemble:
+        src: "{{ output }}"
+        dest: "{{ output }}/mac_{{ mac }}_in_fabric.txt"
       delegate_to: localhost
       run_once: true
-      when: inventory_hostname == ansible_play_hosts_all[-1]
-    - debug: var=grepOutput.stdout_lines
-      delegate_to: localhost
-      run_once: true
-      when: inventory_hostname == ansible_play_hosts_all[-1]

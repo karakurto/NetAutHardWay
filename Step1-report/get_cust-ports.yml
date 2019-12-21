@@ -1,10 +1,9 @@
 ---
 - hosts: leaf
-  serial: 1
   gather_facts: false
   vars:
-    cli_commands: "show interfaces desc"
-    output: "get_outputs/cust-ports.txt"
+    cli_commands: "show interfaces desc | inc {{ customer }} "
+    output: "get_outputs"
     cust: "{{ customer }}"
 
   pre_tasks:
@@ -13,39 +12,34 @@
         state: absent
       delegate_to: localhost
       run_once: true
-      when: inventory_hostname == ansible_play_hosts_all[0]
     - file:
         path: "{{ output }}"
-        state: touch
+        state: directory
       delegate_to: localhost
       run_once: true
-      when: inventory_hostname == ansible_play_hosts_all[0]
 
   tasks:
 
     - raw: "{{ cli_commands }}"
       register: cli_output
 
-    - name: save if descriptions
-      lineinfile:
-        line: |
+    - name: save if descriptions matching the customer for each leaf
+      copy:
+        content: |
             =====================================
-            Interface Descriptions of {{ inventory_hostname }}
+            {{ cust }} is connected to {{ inventory_hostname}} on following ports:
             =====================================
-            {% for line in cli_output.stdout_lines[1:] %}
-            {{ inventory_hostname}} {{ line }}
+            {% for line in cli_output.stdout_lines[0:] %}
+            {{ line }}
             {% endfor %}
-        dest: "{{ output }}"
-        create: false
+            
+        dest: "{{ output }}/{{ inventory_hostname}}_{{ cust }}_port.txt"
       delegate_to: localhost
+      when: "cust in cli_output.stdout"
 
   post_tasks:
-    - raw: "grep {{ cust }} {{output}} | cat"
-      register: grepOutput
+    - assemble:
+        src: "{{ output }}"
+        dest: "{{ output }}/{{ cust }}_ports_in_fabric.txt"
       delegate_to: localhost
       run_once: true
-      when: inventory_hostname == ansible_play_hosts_all[-1]
-    - debug: var=grepOutput.stdout_lines
-      delegate_to: localhost
-      run_once: true
-      when: inventory_hostname == ansible_play_hosts_all[-1]
