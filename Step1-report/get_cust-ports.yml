@@ -32,7 +32,6 @@
             {% for line in cli_output.stdout_lines[0:] %}
             {{ line }}
             {% endfor %}
-            
         dest: "{{ output }}/{{ inventory_hostname}}_{{ cust }}_port.txt"
       delegate_to: localhost
       when: "cust in cli_output.stdout"

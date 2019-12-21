@@ -33,7 +33,6 @@
             {% for line in cli_output.stdout_lines[1:] %}
             {{ line }}
             {% endfor %}
-            
         dest: "{{ output }}/{{ inventory_hostname}}_{{ mac }}_mac.txt"
       delegate_to: localhost
       when: "mac in cli_output.stdout"

@@ -34,7 +34,6 @@
             {% for line in cli_output.stdout_lines[1:] %}
             {{ line }}
             {% endfor %}
-            
         dest: "{{ output }}/{{ inventory_hostname}}_{{ cust }}_{{ ip }}_arp.txt"
       delegate_to: localhost
       when: "ip in cli_output.stdout"
@@ -45,4 +44,3 @@
         dest: "{{ output }}/arp_{{ ip }}_in_vrf_{{ cust }}.txt"
       delegate_to: localhost
       run_once: true
-
